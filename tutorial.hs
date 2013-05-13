@@ -17,3 +17,11 @@ type MotionFunction a = StdGen -> a -> (StdGen,a)
 
 main = do
   putStr "Hello World! Let's hav a picnic!\n"
+
+  people_text <- readFile "people.txt"
+
+  let people :: [Person]
+      people = read people_text
+
+  putStr "Number of people coming: "
+  print (length people)
