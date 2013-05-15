@@ -42,3 +42,19 @@ main = do
 
   writeFile "tut0.svg" $ writePolygons (blue [[(100,100),(200,100),(200,200),(100,200)],[(200,200),(300,200),(300,300),(200,300)]])
 
+  let readPoint :: String -> Point
+      readPoint s | Just [x,y] <- matchRegex (mkRegex "([0-9.]+),([0-9.]+)") s = (read x, read y)
+
+  let readPolygon :: String -> Polygon
+      readPolygon = (map readPoint).(splitRegex $ mkRegex " L ")
+
+  let readPolygons :: String -> [Polygon]
+      readPolygons = (map readPolygon).tail.(splitRegex $ mkRegex "<path")
+
+  park_data <- readFile "park.svg"
+
+  let park = readPolygons park_data
+
+  writeFile "tut1.svg" $ writePolygons (green park)
+
+
